@@ -11,12 +11,15 @@ describe UserManagerAPI do
     UserManagerAPI
   end
 
-  describe "GET /records/hello" do
-    it "responds with 200" do
-      get "/records/hello"
-      parsed_body = JSON.parse(last_response.body)
+  describe "GET /records/gender" do
+    xit "responds with 200" do
+      get "/records/gender"
       expect(last_response.status).to be 200
-      expect(parsed_body["message"]).to eq "test"
+    end
+
+    xit "responds with records sorted by gender" do
+      get "/records/gender"
+      expect(last_response.body).to eq "foo"
     end
   end
 end
