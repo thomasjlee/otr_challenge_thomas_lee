@@ -26,4 +26,14 @@ class UserManager
       users.sort_by { |user| -user.last_name[0].downcase.ord }
     end
   end
+
+  def print(users = @users)
+    tp users, print_column_order
+  end
+
+  private
+
+  def print_column_order
+    [:last_name, :first_name, :gender, :favorite_color, :date_of_birth]
+  end
 end
