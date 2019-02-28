@@ -113,4 +113,37 @@ RSpec.describe UserManager do
       expect(sorted_users.last.last_name).to eq "adams"
     end
   end
+
+  describe "#add_records" do
+    it "adds a new user from comma-delimited data" do
+      @user_manager.add_records(["last,first,male,peach,1/1/1111"])
+      expect(@user_manager.users.length).to be 1
+      expect(@user_manager.users.last.first_name).to eq "first"
+    end
+
+    it "adds a new user from pipe-delimited data" do
+      @user_manager.add_records(["last|first|male|peach|1/1/1111"])
+      expect(@user_manager.users.length).to be 1
+      expect(@user_manager.users.last.first_name).to eq "first"
+    end
+
+    it "adds a new user from space-delimited data" do
+      @user_manager.add_records(["last first male peach 1/1/1111"])
+      expect(@user_manager.users.length).to be 1
+      expect(@user_manager.users.last.first_name).to eq "first"
+    end
+
+    it "adds multiple users" do
+      records = [
+        "one_last,one_first,male,peach,1/1/1111",
+        "two_last,two_first,male,red,2/2/2222",
+        "three_last,three_first,female,yellow,3/3/3333"
+      ]
+      @user_manager.add_records(records)
+      expect(@user_manager.users.length).to be 3
+      expect(@user_manager.users[0].first_name).to eq "one_first"
+      expect(@user_manager.users[1].first_name).to eq "two_first"
+      expect(@user_manager.users[2].first_name).to eq "three_first"
+    end
+  end
 end

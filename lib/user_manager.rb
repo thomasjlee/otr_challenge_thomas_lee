@@ -12,6 +12,13 @@ class UserManager
     users.concat(records.map { |record| User.new(record) })
   end
 
+  def add_records(records)
+    delimiter = detect_delimiter(records)
+    new_users = records.map { |record| User.new(record.split(delimiter)) }
+    users.concat(new_users)
+    new_users
+  end
+
   def sort_by(field)
     unless VALID_SORT_KEYS.include?(field)
       raise ArgumentError, "valid sort keys include #{VALID_SORT_KEYS}"
