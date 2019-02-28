@@ -29,16 +29,32 @@ RSpec.describe Extractor do
   end
 
   describe "::detect_delimiter" do
-    it "detects comma-delimited values" do
-      expect(detect_delimiter("a,b,c")).to eq ","
+    context "passed a string" do
+      it "detects comma-delimited values" do
+        expect(detect_delimiter("a,b,c")).to eq ","
+      end
+
+      it "detects pipe-delimited values" do
+        expect(detect_delimiter("a|b|c")).to eq "|"
+      end
+
+      it "detects space-delimited values" do
+        expect(detect_delimiter("a b c")).to eq "\s"
+      end
     end
 
-    it "detects pipe-delimited values" do
-      expect(detect_delimiter("a|b|c")).to eq "|"
-    end
+    context "passed an array" do
+      it "detects comma-delimited values" do
+        expect(detect_delimiter(["a,b,c"])).to eq ","
+      end
 
-    it "detects space-delimited values" do
-      expect(detect_delimiter("a b c")).to eq "\s"
+      it "detects pipe-delimited values" do
+        expect(detect_delimiter(["a|b|c"])).to eq "|"
+      end
+
+      it "detects space-delimited values" do
+        expect(detect_delimiter(["a b c"])).to eq "\s"
+      end
     end
   end
 end

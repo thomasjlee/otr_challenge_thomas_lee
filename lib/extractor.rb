@@ -10,6 +10,7 @@ module Extractor
   end
 
   def detect_delimiter(line)
+    line = line.first if line.respond_to?(:each)
     delimiter_index = /,|\s|\|/ =~ line
     line[delimiter_index]
   end
