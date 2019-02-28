@@ -12,6 +12,10 @@ describe UserManagerAPI do
   end
 
   describe "POST /records" do
+    after :all do
+      @@user_manager.users = []
+    end
+
     it "responds with newly added record" do
       post("/records", { records: ["last,first,male,blue,1/1/1111"]})
       body = JSON.parse(last_response.body)
@@ -39,6 +43,10 @@ describe UserManagerAPI do
       post("/records", { records: records })
     end
 
+    after :all do
+      @@user_manager.users = []
+    end
+
     it "responds with 200" do
       get "/records/gender"
       expect(last_response.status).to be 200
@@ -54,7 +62,70 @@ describe UserManagerAPI do
       male_index = records.find_index { |user|
         user["last_name"] == "Z" && user["gender"] == "male" }
 
+      expect(records.length).to be 4
       expect(female_index < male_index).to be true
+    end
+  end
+
+  describe "GET /records/birthdate" do
+    before :all do
+      baby  = "baby,name,male,blue,1/1/2019"
+      teen  = "teen,name,male,red,1/1/2005"
+      adult = "adult,name,female,yellow,1/1/1990"
+      elder = "elder,name,female,purple,1/1/1970"
+      records = [baby, teen, adult, elder]
+      post("/records", { records: records })
+    end
+
+    after :all do
+      @@user_manager.users = []
+    end
+
+    it "responds with 200" do
+      get "/records/birthdate"
+      expect(last_response.status).to be 200
+    end
+
+    it "responds with records sorted by date_of_birth" do
+      get "/records/birthdate"
+      records = JSON.parse(last_response.body)["records"]
+
+      expect(records.length).to be 4
+      expect(records[0]["last_name"]).to eq "elder"
+      expect(records[1]["last_name"]).to eq "adult"
+      expect(records[2]["last_name"]).to eq "teen"
+      expect(records[3]["last_name"]).to eq "baby"
+    end
+  end
+
+  describe "GET /records/name" do
+    before :all do
+      adams = "adams,name,male,blue,1/1/2019"
+      baker = "baker,name,male,red,1/1/2005"
+      clark = "clark,name,female,yellow,1/1/1990"
+      dixon = "dixon,name,female,purple,1/1/1970"
+      records = [adams, baker, clark, dixon]
+      post("/records", { records: records })
+    end
+
+    after :all do
+      @@user_manager.users = []
+    end
+
+    it "responds with 200" do
+      get "/records/name"
+      expect(last_response.status).to be 200
+    end
+
+    it "responds with records sorted by last_name, descending" do
+      get "/records/name"
+      records = JSON.parse(last_response.body)["records"]
+
+      expect(records.length).to be 4
+      expect(records[0]["last_name"]).to eq "dixon"
+      expect(records[1]["last_name"]).to eq "clark"
+      expect(records[2]["last_name"]).to eq "baker"
+      expect(records[3]["last_name"]).to eq "adams"
     end
   end
 end

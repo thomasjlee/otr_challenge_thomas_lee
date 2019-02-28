@@ -25,7 +25,15 @@ class UserManagerAPI < Grape::API
     end
 
     get :gender do
-      { records: @@user_manager.sort_by(:gender).map(&:to_hash) }
+      { records: user_manager.sort_by(:gender).map(&:to_hash) }
+    end
+
+    get :birthdate do
+      { records: user_manager.sort_by(:date_of_birth).map(&:to_hash) }
+    end
+
+    get :name do
+      { records: user_manager.sort_by(:last_name_desc).map(&:to_hash) }
     end
   end
 end
