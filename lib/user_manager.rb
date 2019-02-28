@@ -26,7 +26,10 @@ class UserManager
 
     case field
     when :gender
-      users.sort { |a, b| [a.gender, a.last_name] <=> [b.gender, b.last_name] }
+      users.sort do |a, b|
+        [a.gender.downcase, a.last_name.downcase] <=>
+        [b.gender.downcase, b.last_name.downcase]
+      end
     when :date_of_birth
       users.sort_by { |user| user.date_of_birth }
     when :last_name_desc

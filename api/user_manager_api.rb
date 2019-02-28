@@ -20,11 +20,12 @@ class UserManagerAPI < Grape::API
       requires :records, type: Array[String]
     end
     post do
-      user_manager.add_records(params[:records])
+      new_users = user_manager.add_records(params[:records])
+      { records: new_users.map(&:to_hash) }
     end
 
     get :gender do
-      { records: @@user_manager.users }
+      { records: @@user_manager.sort_by(:gender).map(&:to_hash) }
     end
   end
 end
