@@ -13,7 +13,7 @@ describe UserManagerAPI do
 
   describe "POST /records" do
     after :all do
-      @@user_manager.users = []
+      UserManager.memo_user_manager.users = []
     end
 
     it "responds with newly added record" do
@@ -44,7 +44,7 @@ describe UserManagerAPI do
     end
 
     after :all do
-      @@user_manager.users = []
+      UserManager.memo_user_manager.users = []
     end
 
     it "responds with 200" do
@@ -78,7 +78,7 @@ describe UserManagerAPI do
     end
 
     after :all do
-      @@user_manager.users = []
+      UserManager.memo_user_manager.users = []
     end
 
     it "responds with 200" do
@@ -109,7 +109,7 @@ describe UserManagerAPI do
     end
 
     after :all do
-      @@user_manager.users = []
+      UserManager.memo_user_manager.users = []
     end
 
     it "responds with 200" do

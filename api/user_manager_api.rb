@@ -4,14 +4,20 @@ require_relative "../lib/user"
 
 include Extractor
 
-@@user_manager = UserManager.new
+class UserManager
+  def self.memo_user_manager
+    @@memo_user_manager ||= UserManager.new
+  end
+end
 
 class UserManagerAPI < Grape::API
   format :json
 
+  # @@user_manager = UserManager.new
+
   helpers do
     def user_manager
-      @@user_manager
+      UserManager.memo_user_manager
     end
   end
 
